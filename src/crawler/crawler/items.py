@@ -1,12 +1,23 @@
-# Define here the models for your scraped items
-#
-# See documentation in:
-# https://docs.scrapy.org/en/latest/topics/items.html
-
 import scrapy
 
 
-class CrawlerItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
+class ArticleItem(scrapy.Item):
+    url = scrapy.Field()
+    title = scrapy.Field()
+    content = scrapy.Field()
+    timestamp = scrapy.Field()
+
+class HankyungItem(ArticleItem):
+    pass
+
+class SeoulItem(ArticleItem):
+    pass
+
+class FinancialItem(ArticleItem):
+    pass
+
+class HeraldItem(ArticleItem):
+    pass
+
+class AsiaItem(ArticleItem):
     pass
