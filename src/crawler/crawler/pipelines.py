@@ -1,13 +1,16 @@
-# Define your item pipelines here
-#
-# Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
+import re
 
 
-# useful for handling different item types with a single interface
-from itemadapter import ItemAdapter
+class ArticlePipeline:
+    def open_spider(self, spider):
+        spider.logger.info('Article process pipeline opend (started)')
 
-
-class CrawlerPipeline:
     def process_item(self, item, spider):
+        item['title'] = item.get('title').strip()
+        item['content'] = {re.sub('\s+', ' ', paragraph.strip()) for paragraph in item.get('content')}
+        item['content'] = filter(lambda x: len(x) > 0, item['content'])
+        item['content'] = '\n'.join(item['content'])
         return item
+
+    def close_spider(self, spider):
+        spider.logger.info('Article process pipeline closed (finished)')
