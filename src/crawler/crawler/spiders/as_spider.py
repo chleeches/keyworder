@@ -5,10 +5,14 @@ from ..items import AsiaItem
 class AsiaSpider(scrapy.Spider):
     name = "asia"
     start_urls = [
-        'https://www.asiae.co.kr/article/economic-general/2022121516393245785'
+        'https://www.asiae.co.kr/section/economy'
     ]
 
     def parse(self, response):
+        for url in response.css('li.lst_type div.inner_txt h3 a::attr(href)'):
+            yield response.follow(url, callback=self.parseArticle)
+
+    def parseArticle(self, response):
         item = AsiaItem()
         item['url'] = response.url
         item['title'] = response.css('div.area_title h3::text').get()
