@@ -3,7 +3,7 @@ import re
 
 class ArticlePipeline:
     def open_spider(self, spider):
-        spider.logger.info('Article process pipeline opend (started)')
+        spider.logger.info('Article process pipeline opened (started)')
 
     def process_item(self, item, spider):
         item['title'] = item.get('title').strip()
