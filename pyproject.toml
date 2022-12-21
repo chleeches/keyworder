@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "keyworder"
+version = "0.1.0"
+description = "keyworder let you know today's keywords!"
+authors = ["leech"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Scrapy = "^2.7.1"
+psycopg2 = "^2.9.5"
+konlpy = "^0.6.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
