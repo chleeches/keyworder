@@ -64,6 +64,8 @@ ROBOTSTXT_OBEY = True
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'crawler.pipelines.ArticlePipeline': 300,
+   'crawler.pipelines.KeywordPipeline': 400,
+   'crawler.pipelines.DatabasePipeline': 500,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

@@ -7,6 +7,9 @@ class ArticleItem(scrapy.Item):
     content = scrapy.Field()
     timestamp = scrapy.Field()
 
+    title_keywords = scrapy.Field()
+    content_keywords = scrapy.Field()
+
 class HankyungItem(ArticleItem):
     pass
 
