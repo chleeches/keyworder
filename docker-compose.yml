@@ -1,0 +1,26 @@
+services:
+  db:
+    container_name: keyworder_db
+    build: db/
+    restart: always
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    volumes:
+      - /var/local/keyworder:/var/lib/postgresql/data
+    networks:
+      - knet
+
+  crawler:
+    container_name: keyworder_crawler
+    build: "src/crawler/"
+    restart: on-failure
+    networks:
+      - knet
+    env_file:
+      - .env
+
+networks:
+  knet:
+    driver: bridge
