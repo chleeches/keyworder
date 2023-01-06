@@ -37,28 +37,39 @@ class KeywordPipeline:
 class DatabasePipeline:
     def open_spider(self, spider):
         spider.logger.info('Database transaction pipeline opened (started)')
-        hostname = os.environ("POSTGRES_HOSTNAME")
-        username = os.environ("POSTGRES_USER")
-        password = os.environ("POSTGRES_PASSWORD")
-        database = os.environ("POSTGRES_DB")
+        hostname = os.environ.get("POSTGRES_HOSTNAME")
+        username = os.environ.get("POSTGRES_USER")
+        password = os.environ.get("POSTGRES_PASSWORD")
+        database = os.environ.get("POSTGRES_DB")
         self.connection = psycopg2.connect(host=hostname, user=username, password=password, dbname=database)
+        self.connection.autocommit = True
         self.cursor = self.connection.cursor()
     
     def process_item(self, item, spider):
         self.cursor.execute("""
             INSERT INTO
-            articles (url, title, content, created_at)
+            keyworder.articles (url, title, content, created_at)
             VALUES (%s, %s, %s, %s)
         """, (
             item['url'],
             item['title'],
             item['content'],
-            item['timestamp'],
+            item['timestamp'].strftime("%Y-%m-%d %H:%M:%S"),
         ))
-        for keyword, cnt in item['keywords']:
+        for keyword, cnt in item['title_keywords'].items():
             self.cursor.execute("""
                 INSERT INTO
-                keywords (url, keyword, cnt)
+                keyworder.title_keywords (url, keyword, count)
+                VALUES (%s, %s, %s)
+            """, (
+                item['url'],
+                keyword,
+                cnt,
+            ))
+        for keyword, cnt in item['content_keywords'].items():
+            self.cursor.execute("""
+                INSERT INTO
+                keyworder.content_keywords (url, keyword, count)
                 VALUES (%s, %s, %s)
             """, (
                 item['url'],
